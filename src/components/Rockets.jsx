@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { confirmReservation, confirmCancelReservation } from '../redux/rocketSlice';
+import { confirmReservation, confirmCancelReservation } from '../Features/rocketSlice';
 
 const Item = ({ rocket }) => {
   const { id, rocket_name, description, flickr_images, reserved } = rocket;

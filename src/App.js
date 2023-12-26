@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMissionsApi } from './redux/missionsSlice';
-import { fetchRocketsApi } from './redux/rocketSlice';
+import { fetchMissionsApi } from './Features/missionsSlice';
+import { fetchRocketsApi } from './Features/rocketSlice';
 import Rockets from './components/Rockets';
 import Missions from './components/Missions';
 import Profile from './components/Profile';

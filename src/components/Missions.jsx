@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { confirmLeaveMission, confirmMission } from '../redux/missionsSlice';
+import { confirmLeaveMission, confirmMission } from '../Features/missionsSlice';
 
 const styles = {
   table: {
