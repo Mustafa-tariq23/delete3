@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 const initialState = [];
 
 export const fetchMissions = (payload) => ({
@@ -22,16 +20,23 @@ export const leaveMission = (payload) => ({
 });
 
 export const fetchMissionsApi = () => async (dispatch) => {
-  const missions = await axios.get('https://api.spacexdata.com/v3/missions');
-  const mapMissions = Object.entries(missions.data).map(([id, mission]) => {
-    const { mission_name, description } = mission;
-    return {
-      id,
+  try {
+    const response = await fetch('https://api.spacexdata.com/v3/missions');
+    if (!response.ok) {
+      throw new Error(`Failed to fetch missions: ${response.statusText}`);
+    }
+
+    const missions = await response.json();
+    const mapMissions = missions.map(({ mission_name, description, mission_id }) => ({
+      id: mission_id,
       mission_name,
       description,
-    };
-  });
-  dispatch(fetchMissions(mapMissions));
+    }));
+
+    dispatch(fetchMissions(mapMissions));
+  } catch (error) {
+    console.error('Error fetching missions:', error.message);
+  }
 };
 
 export const confirmLeaveMission = (id) => (dispatch) => {
@@ -42,19 +47,16 @@ const missionsReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'FETCH_MISSIONS':
       return action.payload;
-    /* eslint-disable no-labels, no-unreachable */
     case 'JOIN_MISSION':
       return state.map((mission) => {
         if (mission.id !== action.payload.id) return mission;
         return { ...mission, reserved: true };
       });
-      /* eslint-disable no-labels, no-unreachable */
     case 'LEAVE_MISSION':
       return state.map((mission) => {
         if (mission.id !== action.payload.id) return mission;
         return { ...mission, reserved: false };
       });
-      /* eslint-disable no-labels, no-unreachable */
     default:
       return state;
   }
